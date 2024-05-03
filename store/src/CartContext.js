@@ -1,7 +1,8 @@
-import { createContext, useState } from 'react';
-import { productsArray, getProductData } from './productsStore';
+import { createContext, useState } from "react";
+import { productsArray, getProductData } from "./productsStore";
 
-const CartContext = createContext({
+
+export const CartContext = createContext({
     items: [],
     getProductQuantity: () => {},
     addOneToCart: () => {},
@@ -10,24 +11,23 @@ const CartContext = createContext({
     getTotalCost: () => {}
 });
 
-export function CartProvider({children}){
+export function CartProvider({children}) {
+    const [cartProducts, setCartProducts] = useState([]);
 
-    const [cartProducts, setCartProducts] = useState([]); 
-
-    function getProductQuantity(id){
+    function getProductQuantity(id) {
         const quantity = cartProducts.find(product => product.id === id)?.quantity;
-
-        if(quantity === undefined){
+        
+        if (quantity === undefined) {
             return 0;
         }
 
         return quantity;
     }
 
-    function addOneToCart(id){
+    function addOneToCart(id) {
         const quantity = getProductQuantity(id);
 
-        if(quantity === 0){ // Product is not in cart 
+        if (quantity === 0) { // product is not in cart
             setCartProducts(
                 [
                     ...cartProducts,
@@ -37,53 +37,50 @@ export function CartProvider({children}){
                     }
                 ]
             )
-        }else{  // Product is in cart
+        } else { 
             setCartProducts(
                 cartProducts.map(
                     product =>
-                    product.id === id   // if condition
-                    ? { ...product, quantity: product.quantity + 1} // if statement is true
-                    : product
+                    product.id === id                                // if condition
+                    ? { ...product, quantity: product.quantity + 1 } // if statement is true
+                    : product                                        // if statement is false
                 )
             )
         }
     }
 
-    function removeOneFromCart(id){
+    function removeOneFromCart(id) {
         const quantity = getProductQuantity(id);
 
-        if(quantity == 1){
+        if(quantity == 1) {
             deleteFromCart(id);
-        }else{
+        } else {
             setCartProducts(
                 cartProducts.map(
                     product =>
-                    product.id === id   // if condition
-                    ? { ...product, quantity: product.quantity - 1} // if statement is true
-                    : product
+                    product.id === id                                // if condition
+                    ? { ...product, quantity: product.quantity - 1 } // if statement is true
+                    : product                                        // if statement is false
                 )
             )
         }
     }
 
-
-    function deleteFromCart(id){
+    function deleteFromCart(id) {
         setCartProducts(
             cartProducts =>
-                cartProducts.filter(currentProduct => {
-                    return currentProduct.id != id;
-                })
+            cartProducts.filter(currentProduct => {
+                return currentProduct.id != id;
+            })  
         )
     }
 
-
-    function getTotalCost(){
+    function getTotalCost() {
         let totalCost = 0;
         cartProducts.map((cartItem) => {
             const productData = getProductData(cartItem.id);
             totalCost += (productData.price * cartItem.quantity);
-        })
-
+        });
         return totalCost;
     }
 
