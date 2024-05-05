@@ -1,6 +1,8 @@
-// sk_test_51PCa86SCoMblbDGHYqpWfOYtverZ8X99f2Df9WsUrHg0if8OAjnesx7oJ0gzighNY6uz1GNF97EQQD1JUDqeKsPf00ByIUwgmW
-
+// API: sk_test_51PCa86SCoMblbDGHYqpWfOYtverZ8X99f2Df9WsUrHg0if8OAjnesx7oJ0gzighNY6uz1GNF97EQQD1JUDqeKsPf00ByIUwgmW
+// Documentation: https://docs.stripe.com/testing#regulatory-cards
 // Stripe Backup : xumi-xvkr-tlne-pnfa-piig
+
+// test card No.: 4000003560000008
 
 // Coffee : price_1PCzXVSCoMblbDGHD6FxVcvT
 // Sunglasses : price_1PCzYBSCoMblbDGHwzgtsSVC
@@ -16,23 +18,6 @@ app.use(express.static("public"));
 app.use(express.json());
 
 app.post("/checkout", async (req, res) => {
-    /*
-    req.body.items
-    [
-        {
-            id: 1,
-            quantity: 3
-        }
-    ]
-
-    stripe wants
-    [
-        {
-            price: 1,
-            quantity: 3
-        }
-    ]
-    */
     console.log(req.body);
     const items = req.body.items;
     let lineItems = [];
